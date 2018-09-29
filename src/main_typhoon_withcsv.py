@@ -15,18 +15,27 @@ from fastai.dataset import *
 from fastai.sgdr import *
 from fastai.plots import *
 
-from sklearn.metrics import recall_score, precision_score
+#from sklearn.metrics import recall_score, precision_score
 
 def recall(preds,targs):
-    import pdb; pdb.set_trace()
     th = 0.5
-    flg = 1 * (preds > th)
-    return recall_score(targs,flg)
+    prob_TC = np.exp(preds[:,0])
+    flg = 1 * (prob_TC > th)
+    t2 = targs.cpu().numpy() # ground truth
+    f2 = flg.numpy()         # predicted
+    TP = sum(t2*f2)
+    FN = sum(t2*(1-f2))
+    return TP/(TP+FN)
 
 def precision(preds,targs):
     th = 0.5
-    flg = 1 * (preds > th)
-    return precision_score(targs,flg)
+    prob_TC = np.exp(preds[:,0])
+    flg = 1 * (prob_TC > th)
+    t2 = targs.cpu().numpy() # ground truth
+    f2 = flg.numpy()         # predicted
+    TP = sum(t2*f2)
+    FP = sum((1-t2)*f2)
+    return TP/(TP+FP)
 
 from opts import *
 
@@ -51,9 +60,20 @@ if __name__ == '__main__':
     sz = opt.size_img
 
     PATH = "../data/"
-    
+
     # Neural Net Architecture
-    f_model = resnet34
+    if opt.network == 'resnet34':
+        f_model = resnet34
+    elif opt.network == 'resnet50':
+        f_model = resnet50
+    elif opt.network == 'resnet152':
+        f_model = resnet152
+    elif opt.network == 'resnext50':
+        f_model = resnext50
+    elif opt.network == 'vgg19':
+        f_model = vgg19
+    elif opt.network == 'inceptionresnet_2':
+        f_model = inceptionresnet_2
 
     # Transformations
     tfms = tfms_from_model(f_model, sz, aug_tfms=transforms_top_down, max_zoom=1.05)
@@ -70,8 +90,8 @@ if __name__ == '__main__':
                                         tfms=tfms, val_idxs=val_idxs,
                                         test_name='test/', num_workers=6)
     #
-    metrics = [accuracy,recall,precision]
-    #learn = ConvLearner.pretrained(f_model, data, precompute=True)
+    #metrics = [accuracy,recall,precision]
+    metrics = [accuracy]
     learn = ConvLearner.pretrained(f_model, data, precompute=False, metrics=metrics)
     #learn = ConvLearner.pretrained(f_model, data, precompute=False)
 

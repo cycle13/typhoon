@@ -24,6 +24,11 @@ def parse_opts():
         type=str,
         help='Result directory path')
     parser.add_argument(
+        '--network',
+        default='resnet34',
+        type=str,
+        help='Network architecture (supported by fastai)')
+    parser.add_argument(
         '--learning_rate',
         default=0.01,
         type=float,
