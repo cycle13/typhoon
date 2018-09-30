@@ -19,7 +19,7 @@ from fastai.plots import *
 
 def recall(preds,targs):
     th = 0.5
-    prob_TC = np.exp(preds[:,0])
+    prob_TC = np.exp(preds[:,1])
     flg = 1 * (prob_TC > th)
     t2 = targs.cpu().numpy() # ground truth
     f2 = flg.numpy()         # predicted
@@ -29,7 +29,7 @@ def recall(preds,targs):
 
 def precision(preds,targs):
     th = 0.5
-    prob_TC = np.exp(preds[:,0])
+    prob_TC = np.exp(preds[:,1])
     flg = 1 * (prob_TC > th)
     t2 = targs.cpu().numpy() # ground truth
     f2 = flg.numpy()         # predicted
@@ -81,13 +81,13 @@ if __name__ == '__main__':
     # Data loader
     print('setting data loader')
     
-    n = len(list(open(opt.train_flist)))-1
+    n = len(list(open(opt.train_flist)))
     print('training data number:',n)
     val_idxs = get_cv_idxs(n)
     
     data = ImageClassifierData.from_csv(path=PATH, folder='train_orig/',
                                         csv_fname=opt.train_flist, bs=opt.batch_size,
-                                        tfms=tfms, val_idxs=val_idxs,
+                                        tfms=tfms, val_idxs=val_idxs, skip_header=False,
                                         test_name='test/', num_workers=6)
     #
     #metrics = [accuracy,recall,precision]
@@ -106,7 +106,6 @@ if __name__ == '__main__':
         df_lr.to_csv('%s/lr_finder.csv' % (opt.result_path))
 
     # from lr finder
-    #lr = 0.001
     lr = opt.learning_rate
     # differential learning rate
     lfac = opt.lr_diff
@@ -123,7 +122,8 @@ if __name__ == '__main__':
     print('test with TTA')
     multi_preds, y = learn.TTA(is_test=True)
     preds = np.mean(multi_preds, 0)
-    prob_TC = np.exp(preds[:,0])
+    # nonTC:0 / TC:1
+    prob_TC = np.exp(preds[:,1])
 
     test_fnames = learn.data.test_ds.fnames
     # remove 'test/'
@@ -134,7 +134,7 @@ if __name__ == '__main__':
         df = pd.DataFrame({ 'fname' : test_fnames2,
                             'pred' : flg})
         df = df.sort_values('fname')
-        df.to_csv('%s/test_pred_fastai_th%4.2f.tsv' % (opt.result_path,th), header=False, index=False, sep='\t')
+        df.to_csv('%s/pred_%s_th%4.2f.tsv' % (opt.result_path,opt.result_path,th), header=False, index=False, sep='\t')
         
     # output elapsed time
     logfile.write('End time: '+time.ctime()+'\n')
