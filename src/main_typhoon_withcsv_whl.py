@@ -77,8 +77,13 @@ if __name__ == '__main__':
     elif opt.network == 'inceptionresnet_2':
         f_model = inceptionresnet_2
 
+    if opt.transform == 'top_down':
+        aug_tfms = transforms_top_down
+    elif opt.transform == 'rotate':
+        aug_tfms = transforms_top_down + [RandomRotate(90)]        
+
     # Transformations
-    tfms = tfms_from_model(f_model, sz, aug_tfms=transforms_top_down, max_zoom=1.05)
+    tfms = tfms_from_model(f_model, sz, aug_tfms=aug_tfms, max_zoom=1.05)
     
     # Data loader
     print('setting data loader')

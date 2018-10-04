@@ -54,6 +54,11 @@ def parse_opts():
         type=int,
         help='Number of total cycles to run')
     parser.add_argument(
+        '--transform',
+        default='top_down',
+        type=str,
+        help='transformation for data augmentation')
+    parser.add_argument(
         '--no_train',
         action='store_true',
         help='If true, training is not performed.')
