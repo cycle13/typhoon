@@ -76,6 +76,10 @@ if __name__ == '__main__':
         f_model = vgg19
     elif opt.network == 'inceptionresnet_2':
         f_model = inceptionresnet_2
+    elif opt.network == 'wrn50':
+        f_model = wrn
+    elif opt.network == 'se_resnet50':
+        f_model = se_resnet50
 
     if opt.transform == 'top_down':
         aug_tfms = transforms_top_down

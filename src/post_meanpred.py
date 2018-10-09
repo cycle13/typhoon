@@ -34,11 +34,11 @@ if __name__ == '__main__':
     prob_TC = np.mean(M,axis=0)
     
     # prit out prediction
-    for th in [0.8,0.81,0.82,0.83,0.84,0.85,0.86,0.87,0.88,0.89,0.90]:
+    for th in [0.8,0.81,0.82,0.83,0.84,0.845,0.85,0.86,0.87,0.88,0.89,0.90]:
         flg = 1 * (prob_TC > th)
         df = pd.DataFrame({ 'fname' : df.fname,
                             'pred' : flg})
-        df.to_csv('%s/%s/pred_%s_th%4.2f.tsv' % (result_path,synth_dir,synth_dir,th), header=False, index=False, sep='\t')
+        df.to_csv('%s/%s/pred_%s_th%4.3f.tsv' % (result_path,synth_dir,synth_dir,th), header=False, index=False, sep='\t')
 
     #import pdb;pdb.set_trace()
 
