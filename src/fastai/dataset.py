@@ -235,6 +235,9 @@ def open_image(fn):
                 # changed to PIL inoue
                 img = Image.open(str(fn))
                 im = np.asarray(img)
+                # force data to be in [0-1] range
+                # im = np.maximum(im,0.0) # replace negative value with 0
+                # im = np.minimum(im,1.0) # replace larger-than 1 value with 1
                 # interpret greyscale as color image
                 im3 = np.stack([im,im,im],axis=2)
             if im is None: raise OSError(f'File not recognized by opencv: {fn}')

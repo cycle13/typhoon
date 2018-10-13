@@ -71,6 +71,7 @@ if __name__ == "__main__":
    
     # nearmiss 1
     nm = NearMiss(version=1,return_indices=True)
+    print("nearmiss calc finished")
     #nm = NearMiss(version=2,return_indices=True)
     #nm = TomekLinks()
 
