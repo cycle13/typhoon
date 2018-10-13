@@ -1,5 +1,5 @@
 # 
-# Undersample "negative" samples using imbalanced learn nearmiss
+# take statistics for the whole dataset
 # 
 
 import os
@@ -8,12 +8,6 @@ import time
 
 import numpy as np
 import pandas as pd
-
-from sklearn.datasets import make_classification
-from sklearn.decomposition import PCA
-
-from imblearn.under_sampling import NearMiss
-from imblearn.under_sampling import TomekLinks
 
 # -----------------------------
 # add "src" as import path
@@ -44,16 +38,15 @@ if __name__ == "__main__":
                               'label' : ([1]*len(files_po))+([0]*len(files_ng))})
     #df_train = pd.read_csv(train_flist,header=None)
     
-    #N = 1000               #  100000
-    #N = 40000               #  100000
+    #N = 100             
+    #N = 40000          
     N = df_train.shape[0] #2244223
     
     df_train = df_train.sample(n=N,random_state=0,replace=False)
     df_train = df_train.reset_index(drop=True)
-    
-    X = np.zeros((N,sz**2))
-    print ('X size',sys.getsizeof(X)/1000/1000/1000,'GB')
-    y = np.zeros(N,dtype=int)
+
+    Nseps = 100
+    X = np.zeros(Nseps,dtype=int)
    
     for n in range(N):
         fn = df_train.loc[n,'fname']
@@ -62,21 +55,15 @@ if __name__ == "__main__":
             print(n,fn,label)
         # read tiff file
         img = Image.open(PATH+str(fn))
-        img = img.resize((sz,sz))
         im = np.asarray(img)
-        # interpret greyscale as color image
-        # im3 = np.stack([im,im,im],axis=2)
-        X[n,:] = im.flatten()
-        y[n] = label
-   
-    # nearmiss 1
-    nm = NearMiss(version=1,return_indices=True)
-    #nm = NearMiss(version=2,return_indices=True)
-    #nm = TomekLinks()
+        his = np.histogram(im.flatten(),bins=Nseps,range=(0,2))
+        # add to 
+        X = X + his[0]
 
-    X_resampled, y_resampled, idx_res = nm.fit_sample(X,y)
-    df_out = df_train.loc[idx_res]
-    df_out.to_csv('../data/label_list_nearmiss1.csv',header=False, index=False)
+    grd = 0.5*(his[1][:-1] + his[1][1:])
+    df_cnt = pd.DataFrame({ 'x' : np.round(grd,2),
+                            'count' : X})
+    df_cnt.to_csv('../data/hist_all_data.csv',index=False)
 
     tend = time.time()
     tdiff = float(tend-tstart)
