@@ -80,6 +80,12 @@ if __name__ == '__main__':
         f_model = wrn
     elif opt.network == 'se_resnet50':
         f_model = se_resnet50
+    elif opt.network == 'densenet121':
+        f_model = dn121
+    elif opt.network == 'densenet169':
+        f_model = dn169
+    elif opt.network == 'densenet201':
+        f_model = dn201
 
     if opt.transform == 'top_down':
         aug_tfms = transforms_top_down
