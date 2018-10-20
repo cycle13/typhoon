@@ -19,6 +19,10 @@ def parse_opts():
         type=str,
         help='validation filelist(csv) path')
     parser.add_argument(
+        '--model_path',
+        type=str,
+        help='path of a pretrained model')
+    parser.add_argument(
         '--result_path',
         default='results',
         type=str,
