@@ -72,8 +72,14 @@ if __name__ == '__main__':
         f_model = resnet152
     elif opt.network == 'resnext50':
         f_model = resnext50
+    elif opt.network == 'resnext101':
+        f_model = resnext101
+    elif opt.network == 'resnext101_64':
+        f_model = resnext101_64
     elif opt.network == 'vgg19':
         f_model = vgg19
+    elif opt.network == 'inception_4':
+        f_model = inception_4
     elif opt.network == 'inceptionresnet_2':
         f_model = inceptionresnet_2
     elif opt.network == 'wrn50':
@@ -91,6 +97,8 @@ if __name__ == '__main__':
         aug_tfms = transforms_top_down
     elif opt.transform == 'rotate':
         aug_tfms = transforms_top_down + [RandomRotate(90)]        
+    elif opt.transform == 'randomcrop':
+        aug_tfms = [Scale(sz+20,sz+20)] + [RandomCrop(sz)] + transforms_top_down + [RandomRotate(90)]
 
     # Transformations
     tfms = tfms_from_model(f_model, sz, aug_tfms=aug_tfms, max_zoom=1.05)
