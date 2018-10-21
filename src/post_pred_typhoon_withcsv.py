@@ -123,7 +123,7 @@ if __name__ == '__main__':
     df = pd.DataFrame({ 'fname' : test_fnames2,
                         'prob_TC' : prob_TC})
     df = df.sort_values('fname')
-    df.to_csv('%s/post_rerun_pred_%s_prob.tsv' % (opt.result_path,opt.result_path), header=False, index=False, sep='\t')
+    df.to_csv('%s/post_rerun_nonTC_%s_prob.tsv' % (opt.result_path,opt.result_path), header=False, index=False, sep='\t')
 
 #    for th in [0.5,0.7,0.8,0.85,0.9,0.95,0.97,0.99]:
 #        flg = 1 * (prob_TC > th)

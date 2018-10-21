@@ -10,14 +10,15 @@ import numpy as np
 if __name__ == '__main__':
     cases = [#'result_20180931_red_vgg19',
              #'result_20181001_red_resnet50_sz224',
-             'result_20181003_whole_resnet50_cy1_lr001_ld1',
+             #'result_20181003_whole_resnet50_cy1_lr001_ld1',
              #'result_20181005_whl_resnet50_rot',
              #'result_20181007_whl_vgg19',
              #'result_20181010_whl_wrn50_lr001',
-             #'result_20181014_whl_dn201_lr001'
+             #'result_20181014_whl_dn201_lr001',
+             'result_20181018_whl_resnext101_64'
     ]
 
-    synth_dir = '20181018single_resnet50_cy1'
+    synth_dir = '20181020single_resnext101_64'
     result_path = '../run/result_synthesized/'
 
     # create result dir
