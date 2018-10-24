@@ -70,10 +70,28 @@ if __name__ == '__main__':
         f_model = resnet152
     elif opt.network == 'resnext50':
         f_model = resnext50
+    elif opt.network == 'resnext101':
+        f_model = resnext101
+    elif opt.network == 'resnext101_64':
+        f_model = resnext101_64
     elif opt.network == 'vgg19':
         f_model = vgg19
+    elif opt.network == 'inception_4':
+        f_model = inception_4
     elif opt.network == 'inceptionresnet_2':
         f_model = inceptionresnet_2
+    elif opt.network == 'wrn50':
+        f_model = wrn
+    elif opt.network == 'se_resnet50':
+        f_model = se_resnet50
+    elif opt.network == 'densenet121':
+        f_model = dn121
+    elif opt.network == 'densenet169':
+        f_model = dn169
+    elif opt.network == 'densenet201':
+        f_model = dn201
+    elif opt.network == 'vgg16':
+        f_model = vgg16
 
     if opt.transform == 'top_down':
         aug_tfms = transforms_top_down

@@ -15,10 +15,11 @@ if __name__ == '__main__':
              #'result_20181007_whl_vgg19',
              #'result_20181010_whl_wrn50_lr001',
              #'result_20181014_whl_dn201_lr001',
-             'result_20181018_whl_resnext101_64'
+             #'result_20181018_whl_resnext101_64',
+             'result_20181021_hem_resnet50'
     ]
 
-    synth_dir = '20181020single_resnext101_64'
+    synth_dir = '20181021single_hem_resnet50'
     result_path = '../run/result_synthesized/'
 
     # create result dir
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     prob_TC = np.mean(M,axis=0)
     
     # prit out prediction
-    for th in [0.8,0.81,0.82,0.83,0.84,0.845,0.85,0.86,0.87,0.88,0.89,0.90]:
+    for th in [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.81,0.82,0.83,0.84,0.845,0.85,0.86,0.87,0.88,0.89,0.90]:
         flg = 1 * (prob_TC > th)
         df = pd.DataFrame({ 'fname' : df.fname,
                             'pred' : flg})
